@@ -37,12 +37,18 @@ public class ContactListController {
         return contactList.getAllUsernames();
     }
 
-    public void addContact(Contact contact) {
-        contactList.addContact(contact);
+    public boolean addContact(Contact contact, Context context) {
+//        contactList.addContact(contact);
+        AddContactCommand addContactCommand = new AddContactCommand(contactList, contact, context);
+        addContactCommand.execute();
+        return addContactCommand.isExecuted();
     }
 
-    public void deleteContact(Contact contact) {
-        contactList.deleteContact(contact);
+    public boolean deleteContact(Contact contact, Context context) {
+//        contactList.deleteContact(contact);
+        DeleteContactCommand deleteContactCommand = new DeleteContactCommand(contactList, contact, context);
+        deleteContactCommand.execute();
+        return deleteContactCommand.isExecuted();
     }
 
     public Contact getContact(int index) {
@@ -83,5 +89,14 @@ public class ContactListController {
 
     public void removeObserver(Observer observer) {
         contactList.removeObserver(observer);
+    }
+
+
+    // others
+
+    public boolean editContact(Contact oldContact, Contact newContact, Context context) {
+        EditContactCommand editContactCommand = new EditContactCommand(contactList, oldContact, newContact, context);
+        editContactCommand.execute();
+        return editContactCommand.isExecuted();
     }
 }
