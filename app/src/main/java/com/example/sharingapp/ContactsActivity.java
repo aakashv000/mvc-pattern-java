@@ -22,6 +22,7 @@ public class ContactsActivity extends AppCompatActivity {
     private ArrayAdapter<Contact> adapter;
     private Context context;
     private ItemList item_list = new ItemList();
+    private ItemListController itemListController = new ItemListController(item_list);
     private ContactList active_borrowers_list = new ContactList();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class ContactsActivity extends AppCompatActivity {
 
         context = getApplicationContext();
         contact_list.loadContacts(context);
-        item_list.loadItems(context);
+        itemListController.loadItems(context);
 
         my_contacts = (ListView) findViewById(R.id.my_contacts);
         adapter = new ContactAdapter(ContactsActivity.this, contact_list.getContacts());
@@ -45,7 +46,7 @@ public class ContactsActivity extends AppCompatActivity {
 
                 Contact contact = adapter.getItem(pos);
 
-                ArrayList<Contact> active_borrowers = item_list.getActiveBorrowers();
+                ArrayList<Contact> active_borrowers = itemListController.getActiveBorrowers();
                 active_borrowers_list.setContacts(active_borrowers);
 
                 // Prevent contact from editing an "active" borrower.
