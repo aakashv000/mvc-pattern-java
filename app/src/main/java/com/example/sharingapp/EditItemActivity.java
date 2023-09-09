@@ -79,7 +79,10 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
 
         on_create_update = true;
 
+        contactListController.addObserver(this);
         contactListController.loadContacts(context);
+
+        on_create_update = false;
 
         // moved to update method of Observer pattern
 //        adapter = new ArrayAdapter<String>(this,
