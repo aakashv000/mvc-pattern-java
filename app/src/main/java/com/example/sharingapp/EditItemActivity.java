@@ -29,6 +29,7 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
     private Context context;
 
     private ContactList contact_list = new ContactList();
+    private ContactListController contactListController = new ContactListController(contact_list);
 
     private Bitmap image;
     private int REQUEST_CODE = 1;
@@ -78,7 +79,7 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
 
         on_create_update = true;
 
-        contact_list.loadContacts(context);
+        contactListController.loadContacts(context);
 
         // moved to update method of Observer pattern
 //        adapter = new ArrayAdapter<String>(this,
@@ -130,7 +131,7 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
     public void update() {
         if (on_create_update) {
             adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_spinner_dropdown_item, contact_list.getAllUsernames());
+                    android.R.layout.simple_spinner_dropdown_item, contactListController.getAllUsernames());
             borrower_spinner.setAdapter(adapter);
 
 //            item = item_list.getItem(pos);
@@ -140,7 +141,7 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
 //        Contact contact = item.getBorrower();
             Contact contact = itemController.getBorrower();
             if (contact != null){
-                int contact_pos = contact_list.getIndex(contact);
+                int contact_pos = contactListController.getIndex(contact);
                 borrower_spinner.setSelection(contact_pos);
             }
 
@@ -229,7 +230,7 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
         Contact contact = null;
         if (!status.isChecked()) {
             String borrower_str = borrower_spinner.getSelectedItem().toString();
-            contact = contact_list.getContactByUsername(borrower_str);
+            contact = contactListController.getContactByUsername(borrower_str);
         }
 
         Dimensions dimensions = new Dimensions(length_str, width_str, height_str);
@@ -309,7 +310,7 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
 
         } else {
             // Means not borrowed
-            if (contact_list.getSize()==0){
+            if (contactListController.getSize()==0){
                 // No contacts, need to add contacts to be able to add a borrower.
                 invisible.setEnabled(false);
                 invisible.setVisibility(View.VISIBLE);

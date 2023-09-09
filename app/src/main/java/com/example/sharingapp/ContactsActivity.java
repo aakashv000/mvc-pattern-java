@@ -18,23 +18,25 @@ import java.util.ArrayList;
 public class ContactsActivity extends AppCompatActivity {
 
     private ContactList contact_list = new ContactList();
+    private ContactListController contactListController = new ContactListController(contact_list);
     private ListView my_contacts;
     private ArrayAdapter<Contact> adapter;
     private Context context;
     private ItemList item_list = new ItemList();
     private ItemListController itemListController = new ItemListController(item_list);
     private ContactList active_borrowers_list = new ContactList();
+    private ContactListController activeBorrowersListController = new ContactListController(active_borrowers_list);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
         context = getApplicationContext();
-        contact_list.loadContacts(context);
+        contactListController.loadContacts(context);
         itemListController.loadItems(context);
 
         my_contacts = (ListView) findViewById(R.id.my_contacts);
-        adapter = new ContactAdapter(ContactsActivity.this, contact_list.getContacts());
+        adapter = new ContactAdapter(ContactsActivity.this, contactListController.getContacts());
         my_contacts.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -47,11 +49,11 @@ public class ContactsActivity extends AppCompatActivity {
                 Contact contact = adapter.getItem(pos);
 
                 ArrayList<Contact> active_borrowers = itemListController.getActiveBorrowers();
-                active_borrowers_list.setContacts(active_borrowers);
+                activeBorrowersListController.setContacts(active_borrowers);
 
                 // Prevent contact from editing an "active" borrower.
-                if (active_borrowers_list != null) {
-                    if (active_borrowers_list.hasContact(contact)) {
+                if (activeBorrowersListController != null) {
+                    if (activeBorrowersListController.hasContact(contact)) {
                         CharSequence text = "Cannot edit or delete active borrower!";
                         int duration = Toast.LENGTH_SHORT;
                         Toast.makeText(context, text, duration).show();
@@ -59,8 +61,8 @@ public class ContactsActivity extends AppCompatActivity {
                     }
                 }
 
-                contact_list.loadContacts(context); // Must load contacts again here
-                int meta_pos = contact_list.getIndex(contact);
+                contactListController.loadContacts(context); // Must load contacts again here
+                int meta_pos = contactListController.getIndex(contact);
 
                 Intent intent = new Intent(context, EditContactActivity.class);
                 intent.putExtra("position", meta_pos);
@@ -76,10 +78,10 @@ public class ContactsActivity extends AppCompatActivity {
         super.onStart();
 
         context = getApplicationContext();
-        contact_list.loadContacts(context);
+        contactListController.loadContacts(context);
 
         my_contacts = (ListView) findViewById(R.id.my_contacts);
-        adapter = new ContactAdapter(ContactsActivity.this, contact_list.getContacts());
+        adapter = new ContactAdapter(ContactsActivity.this, contactListController.getContacts());
         my_contacts.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
