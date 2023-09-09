@@ -38,10 +38,10 @@ public class ContactsActivity extends AppCompatActivity implements Observer {
         contactListController.loadContacts(context);
         itemListController.loadItems(context);
 
-        my_contacts = (ListView) findViewById(R.id.my_contacts);
-        adapter = new ContactAdapter(ContactsActivity.this, contactListController.getContacts());
-        my_contacts.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        my_contacts = (ListView) findViewById(R.id.my_contacts);
+//        adapter = new ContactAdapter(ContactsActivity.this, contactListController.getContacts());
+//        my_contacts.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
 
         // When contact is long clicked, this starts EditContactActivity
         my_contacts.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener() {
@@ -83,10 +83,10 @@ public class ContactsActivity extends AppCompatActivity implements Observer {
         context = getApplicationContext();
         contactListController.loadContacts(context);
 
-        my_contacts = (ListView) findViewById(R.id.my_contacts);
-        adapter = new ContactAdapter(ContactsActivity.this, contactListController.getContacts());
-        my_contacts.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        my_contacts = (ListView) findViewById(R.id.my_contacts);
+//        adapter = new ContactAdapter(ContactsActivity.this, contactListController.getContacts());
+//        my_contacts.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
     }
 
     public void addContactActivity(View view){
@@ -101,6 +101,9 @@ public class ContactsActivity extends AppCompatActivity implements Observer {
     }
 
     public void update() {
-        
+        my_contacts = (ListView) findViewById(R.id.my_contacts);
+        adapter = new ContactAdapter(ContactsActivity.this, contactListController.getContacts());
+        my_contacts.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }
