@@ -209,6 +209,8 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
             return;
         }
 
+        itemListController.removeObserver(this);
+
 
         // End EditItemActivity
         Intent intent = new Intent(this, MainActivity.class);
@@ -284,8 +286,9 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
             return;
         }
 
-
         // End EditItemActivity
+        itemListController.removeObserver(this);
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
