@@ -12,7 +12,7 @@ import android.widget.EditText;
  * contact's id.
  * Note: You will not be able contacts which are "active" borrowers
  */
-public class EditContactActivity extends AppCompatActivity {
+public class EditContactActivity extends AppCompatActivity implements Observer {
 
     private ContactList contact_list = new ContactList();
     private ContactListController contactListController = new ContactListController(contact_list);
@@ -22,25 +22,34 @@ public class EditContactActivity extends AppCompatActivity {
     private EditText username;
     private Context context;
 
+    private boolean on_create_update = false;
+    private int pos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_contact);
 
         context = getApplicationContext();
+
+        contactListController.addObserver(this);
+
         contactListController.loadContacts(context);
 
+        on_create_update = true;
+
         Intent intent = getIntent();
-        int pos = intent.getIntExtra("position", 0);
+        pos = intent.getIntExtra("position", 0);
 
-        contact = contactListController.getContact(pos);
-        contactController = new ContactController(contact);
-
-        username = (EditText) findViewById(R.id.username);
-        email = (EditText) findViewById(R.id.email);
-
-        username.setText(contactController.getUsername());
-        email.setText(contactController.getEmail());
+        // move to update()
+//        contact = contactListController.getContact(pos);
+//        contactController = new ContactController(contact);
+//
+//        username = (EditText) findViewById(R.id.username);
+//        email = (EditText) findViewById(R.id.email);
+//
+//        username.setText(contactController.getUsername());
+//        email.setText(contactController.getEmail());
     }
 
     public void saveContact(View view) {
@@ -80,6 +89,8 @@ public class EditContactActivity extends AppCompatActivity {
         }
 
         // End EditContactActivity
+        contactListController.removeObserver(this);
+
         finish();
     }
 
@@ -93,7 +104,23 @@ public class EditContactActivity extends AppCompatActivity {
         if (!success){
             return;
         }
+
+        contactListController.removeObserver(this);
+
         // End EditContactActivity
         finish();
+    }
+
+    public void update() {
+        if (on_create_update) {
+            contact = contactListController.getContact(pos);
+            contactController = new ContactController(contact);
+
+            username = (EditText) findViewById(R.id.username);
+            email = (EditText) findViewById(R.id.email);
+
+            username.setText(contactController.getUsername());
+            email.setText(contactController.getEmail());
+        }
     }
 }
