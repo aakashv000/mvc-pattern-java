@@ -272,12 +272,13 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
         String id = itemController.getId(); // Reuse the item id
 
         Item updated_item = new Item(title_str, maker_str, description_str, image, id);
-        updated_item.setDimensions(length_str, width_str, height_str);
+        ItemController updatedItemController = new ItemController(updated_item);
+        updatedItemController.setDimensions(length_str, width_str, height_str);
 
         boolean checked = status.isChecked();
         if (!checked) {
-            updated_item.setStatus("Borrowed");
-            updated_item.setBorrower(contact);
+            updatedItemController.setStatus("Borrowed");
+            updatedItemController.setBorrower(contact);
         }
 
 // Edit item
