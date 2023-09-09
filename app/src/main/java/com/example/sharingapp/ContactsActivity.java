@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Displays a list of all contacts
  */
-public class ContactsActivity extends AppCompatActivity {
+public class ContactsActivity extends AppCompatActivity implements Observer {
 
     private ContactList contact_list = new ContactList();
     private ContactListController contactListController = new ContactListController(contact_list);
@@ -32,6 +32,9 @@ public class ContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
 
         context = getApplicationContext();
+
+        contactListController.addObserver(this);
+
         contactListController.loadContacts(context);
         itemListController.loadItems(context);
 
@@ -89,5 +92,15 @@ public class ContactsActivity extends AppCompatActivity {
     public void addContactActivity(View view){
         Intent intent = new Intent(this, AddContactActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        contactListController.removeObserver(this);
+    }
+
+    public void update() {
+        
     }
 }

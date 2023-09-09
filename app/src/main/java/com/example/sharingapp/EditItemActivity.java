@@ -271,6 +271,9 @@ public class EditItemActivity extends AppCompatActivity implements Observer {
 //        String id = item.getId(); // Reuse the item id
         String id = itemController.getId(); // Reuse the item id
 
+        // refactoring - to ensure controller is used instead of model at all places -
+        // look for all places where model constructor (Item() here) is used,
+        // and check that next line for each such instance should be controller class creation (ItemController() here) for respective model
         Item updated_item = new Item(title_str, maker_str, description_str, image, id);
         ItemController updatedItemController = new ItemController(updated_item);
         updatedItemController.setDimensions(length_str, width_str, height_str);
