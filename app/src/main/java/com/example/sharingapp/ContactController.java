@@ -18,7 +18,7 @@ public class ContactController {
         this.contact = contact;
     }
 
-    
+
     // Delegate methods
 
     public String getUsername() {
